@@ -16,7 +16,9 @@ public class SshUtil {
         JSch jsch = new JSch();
         Session session = jsch.getSession(user, host, port);
         session.setPassword(password);
-        session.setUserInfo(new MyUserInfo());
+        MyUserInfo myUserInfo = new MyUserInfo();
+        myUserInfo.setPassword(password);
+        session.setUserInfo(myUserInfo);
         session.connect(30000);
         Channel channel = session.openChannel("shell");
         channel.setInputStream(new ByteArrayInputStream((command + " \n").getBytes()));

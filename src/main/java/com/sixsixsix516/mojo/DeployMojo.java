@@ -1,9 +1,11 @@
 package com.sixsixsix516.mojo;
 
-import com.jcraft.jsch.SftpException;
+import com.jcraft.jsch.JSchException;
 import com.sixsixsix516.SftpUtil;
 import com.sixsixsix516.ssh.SshUtil;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugins.annotations.Execute;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
@@ -12,6 +14,7 @@ import java.io.*;
 /**
  * @author sun 2020/8/29 11:39
  */
+@Execute(phase = LifecyclePhase.PACKAGE)
 @Mojo(name = "deploy")
 public class DeployMojo extends AbstractMojo {
 
@@ -31,13 +34,13 @@ public class DeployMojo extends AbstractMojo {
     /**
      * jar文件名称
      */
-    @Parameter
+    @Parameter(defaultValue = "${project.artifactId}-${project.version}.${project.packaging}")
     private String fileName;
 
     /**
      * 项目根路径
      */
-    @Parameter
+    @Parameter(defaultValue = "${user.dir}")
     private String projectPath;
 
 
@@ -46,14 +49,19 @@ public class DeployMojo extends AbstractMojo {
         // 0.数据校验
         // 1.上传文件
         SftpUtil sftpUtil = new SftpUtil(user, password, ip, port);
-        sftpUtil.login();
+        try {
+            sftpUtil.login();
+        } catch (JSchException e) {
+            getLog().error("服务器连接失败 !", e);
+            return;
+        }
         try {
             sftpUtil.upload(deployPath, fileName, new FileInputStream(new File(projectPath + "/target/" + fileName)));
-        } catch (SftpException e) {
-            getLog().info(e.getMessage());
-        } catch (FileNotFoundException e) {
-            getLog().error("上传文件不存在", e);
+        } catch (Exception e) {
+            getLog().error("未找到部署的包 : " + fileName);
+            return;
         }
+        sftpUtil.logout();
         // 2.关闭端口
         try {
             SshUtil.execute(user, password, ip, port, "kill -9 `jps -l | grep '" + deployPath + fileName + "' | cut -d ' ' -f 1 `");
@@ -62,6 +70,5 @@ public class DeployMojo extends AbstractMojo {
             e.printStackTrace();
         }
     }
-
 
 }
