@@ -1,4 +1,4 @@
-package com.sixsixsix;
+package com.sixsixsix516;
 
 import com.jcraft.jsch.*;
 import org.apache.commons.io.IOUtils;
@@ -7,11 +7,7 @@ import java.io.*;
 import java.util.Properties;
 import java.util.Vector;
 
-/**
- * @version 1.0.0
- * @ClassName: SFTPUtil
- * @Description: sftp连接工具类
- */
+
 public class SftpUtil {
 
     private ChannelSftp sftp;

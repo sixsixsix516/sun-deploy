@@ -1,4 +1,4 @@
-package com.sixsixsix.ssh;
+package com.sixsixsix516.ssh;
 
 /**
  * @author sun 2020/8/28 17:15
@@ -6,11 +6,7 @@ package com.sixsixsix.ssh;
 
 import com.jcraft.jsch.UserInfo;
 
-/**
- * @Description todo
- * @Author Administrator
- * @Date 2019/11/15 11:35
- **/
+
 public class MyUserInfo implements UserInfo  {
 
     private String password;
