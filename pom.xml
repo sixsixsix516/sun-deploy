@@ -3,17 +3,40 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
     <groupId>com.sixsixsix516</groupId>
     <artifactId>sun-deploy-maven-plugin</artifactId>
     <version>1.0</version>
     <packaging>maven-plugin</packaging>
 
+    <name>sun-deploy-maven-plugin</name>
+    <description>easy deploy</description>
+    <url>https://github.com/sixsixsix516/sun-deploy</url>
+
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
+    <scm>
+        <tag>master</tag>
+        <url>git@github.com:cloudnil/marathon-client.git</url>
+        <connection>scm:git:git@github.com:cloudnil/marathon-client.git</connection>
+        <developerConnection>scm:git:git@github.com:cloudnil/marathon-client.git</developerConnection>
+    </scm>
+    <developers>
+        <developer>
+            <name>sunlin</name>
+            <email>sixsixsix516@63.com</email>
+        </developer>
+    </developers>
 
 
     <dependencies>
@@ -40,20 +63,67 @@
         </dependency>
     </dependencies>
 
-
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.0</version>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>utf-8</encoding>
+                    <attach>true</attach>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- 你的秘钥ID -->
+                    <keyname>E6888B639CC6209823FABC18EF898D8EC224F9A5</keyname>
+                    <passphraseServerId>E6888B639CC6209823FABC18EF898D8EC224F9A5</passphraseServerId>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>
