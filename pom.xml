@@ -34,7 +34,7 @@
     <developers>
         <developer>
             <name>sunlin</name>
-            <email>sixsixsix516@63.com</email>
+            <email>sixsixsix516@163.com</email>
         </developer>
     </developers>
 
@@ -65,6 +65,16 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>utf-8</encoding>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
